@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbasicauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpbasicauth
+  template:
+    metadata:
+      labels:
+        app: httpbasicauth
+    spec:
+      serviceAccountName: http-basic-auth
+      containers:
+        - name: httpbasicauth
+          image: "registry.cn-shenzhen.aliyuncs.com/jaywoods/httpbasicauth"
+          args:
+            - /httpbasicauth
+            - --configmap=$(POD_NAMESPACE)/accounts
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: TZ
+              value: Asia/Shanghai
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1

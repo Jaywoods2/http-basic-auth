@@ -1,0 +1,9 @@
+language: go
+services:
+  - docker
+script:
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o httpbasicauth main.go
+  - docker login --username=${USER} -P ${PASSWORD} ${REGISTRY}
+  - export TAG=$(date "+%Y%m%d%H%M")
+  - docker build -t ${REGISTRY}/jaywoods/httpbasicauth:${TAG} .
+  - docker push  ${REGISTRY}/jaywoods/httpbasicauth:${TAG}

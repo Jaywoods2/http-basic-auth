@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: httpbasicauth
+  namespace: tools
+spec:
+  rules:
+    - host: auth.choerodon.cn
+      http:
+        paths:
+          - backend:
+              serviceName: httpbasicauth
+              servicePort: 8080
+            path: /

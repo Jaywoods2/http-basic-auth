@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: accounts
+  annotations: {}
+  labels:
+    app: accounts
+data:
+  zhangsan: "12345"
+  lisi: "12345"

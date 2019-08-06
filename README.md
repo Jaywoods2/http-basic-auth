@@ -1,0 +1,1 @@
+--configmap=$(POD_NAMESPACE)/accounts
